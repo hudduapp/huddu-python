@@ -26,7 +26,7 @@ class Connection:
         return res.json(), res.status_code
 
     def post(self, url: str, body: dict) -> dict:
-        res = requests.request("POST", url=f"{self._base_url}{url}", body=self.encode_body(body),
+        res = requests.request("POST", url=f"{self._base_url}{url}", data=self.encode_body(body),
                                headers=self._headers)
 
         if res.status_code > 299:
@@ -35,7 +35,7 @@ class Connection:
         return res.json(), res.status_code
 
     def put(self, url: str, body: dict) -> dict:
-        res = requests.request("PUT", url=f"{self._base_url}{url}", body=self.encode_body(body),
+        res = requests.request("PUT", url=f"{self._base_url}{url}", data=self.encode_body(body),
                                headers=self._headers)
 
         if res.status_code > 299:
@@ -44,7 +44,7 @@ class Connection:
         return res.json(), res.status_code
 
     def patch(self, url: str, body: dict) -> dict:
-        res = requests.request("PATCH", url=f"{self._base_url}{url}", body=self.encode_body(body),
+        res = requests.request("PATCH", url=f"{self._base_url}{url}", data=self.encode_body(body),
                                headers=self._headers)
 
         if res.status_code > 299:
@@ -53,7 +53,7 @@ class Connection:
         return res.json(), res.status_code
 
     def delete(self, url: str, body: dict) -> dict:
-        res = requests.request("DELETE", url=f"{self._base_url}{url}", body=self.encode_body(body),
+        res = requests.request("DELETE", url=f"{self._base_url}{url}", data=self.encode_body(body),
                                headers=self._headers)
 
         if res.status_code > 299:
