@@ -7,7 +7,7 @@ on:
 jobs:
   generate-python-client:
     runs-on: ubuntu-latest
-    name: Example
+    name: Build SDK
     steps:
       # Checkout your code
       - name: Checkout
@@ -21,3 +21,12 @@ jobs:
         uses: openapi-generators/openapitools-generator-action@v1
         with:
           generator: python
+
+      - name: Publish SDK
+        - uses: seanmiddleditch/gha-publish-to-git@master
+          with:
+            branch: latest
+            github_token: '${{ secrets.GITHUB_TOKEN  }}'
+            source_folder: ./
+            
+          if: success() && github.event == 'push'
