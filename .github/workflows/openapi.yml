@@ -28,5 +28,3 @@ jobs:
           branch: latest
           github_token: "${{ secrets.GITHUB_TOKEN  }}"
           source_folder: ./
-
-        if: success() && github.event == 'push'
