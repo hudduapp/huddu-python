@@ -1,1 +1,158 @@
-{"openapi":"3.0.2","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/entries":{"post":{"summary":"Create Entry","description":"creates a new entry to a series if it exists & the request contains a valid token\n\n\n:param request:\n:param data:\n:return:","operationId":"create_entry_entries_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateEntry"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/dashboards":{"post":{"summary":"Create Dashboard","operationId":"create_dashboard_dashboards_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateDashboard"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}},"/series":{"post":{"summary":"New Series","operationId":"new_series_series_post","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CreateSeries"}}},"required":true},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}}},"components":{"schemas":{"CreateDashboard":{"title":"CreateDashboard","required":["name","project"],"type":"object","properties":{"name":{"title":"Name","type":"string"},"project":{"title":"Project","type":"string"},"tags":{"title":"Tags","type":"array","items":{},"default":[]},"description":{"title":"Description","type":"string"},"meta":{"title":"Meta","type":"object","default":{}}}},"CreateEntry":{"title":"CreateEntry","required":["series","data"],"type":"object","properties":{"series":{"title":"Series","type":"string"},"data":{"title":"Data","type":"object"},"meta":{"title":"Meta","type":"object","default":{}}}},"CreateSeries":{"title":"CreateSeries","required":["name","dashboard"],"type":"object","properties":{"name":{"title":"Name","type":"string"},"dashboard":{"title":"Dashboard","type":"string"},"description":{"title":"Description","type":"string"},"meta":{"title":"Meta","type":"object","default":{}}}},"HTTPValidationError":{"title":"HTTPValidationError","type":"object","properties":{"detail":{"title":"Detail","type":"array","items":{"$ref":"#/components/schemas/ValidationError"}}}},"ValidationError":{"title":"ValidationError","required":["loc","msg","type"],"type":"object","properties":{"loc":{"title":"Location","type":"array","items":{"anyOf":[{"type":"string"},{"type":"integer"}]}},"msg":{"title":"Message","type":"string"},"type":{"title":"Error Type","type":"string"}}}}}}
+{
+  "openapi": "3.0.2",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/entries": {
+      "post": {
+        "summary": "Create Entry",
+        "description": "creates a new entry to a series if it exists & the request contains a valid token\n\n\n:param request:\n:param data:\n:return:",
+        "operationId": "create_entry_entries_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateEntry" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboards": {
+      "post": {
+        "summary": "Create Dashboard",
+        "operationId": "create_dashboard_dashboards_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateDashboard" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/series": {
+      "post": {
+        "summary": "New Series",
+        "operationId": "new_series_series_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateSeries" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateDashboard": {
+        "title": "CreateDashboard",
+        "required": ["name", "project"],
+        "type": "object",
+        "properties": {
+          "name": { "title": "Name", "type": "string" },
+          "project": { "title": "Project", "type": "string" },
+          "tags": {
+            "title": "Tags",
+            "type": "array",
+            "items": {},
+            "default": []
+          },
+          "description": { "title": "Description", "type": "string" },
+          "meta": { "title": "Meta", "type": "object", "default": {} }
+        }
+      },
+      "CreateEntry": {
+        "title": "CreateEntry",
+        "required": ["series", "data"],
+        "type": "object",
+        "properties": {
+          "series": { "title": "Series", "type": "string" },
+          "data": { "title": "Data", "type": "object" },
+          "meta": { "title": "Meta", "type": "object", "default": {} }
+        }
+      },
+      "CreateSeries": {
+        "title": "CreateSeries",
+        "required": ["name", "dashboard"],
+        "type": "object",
+        "properties": {
+          "name": { "title": "Name", "type": "string" },
+          "dashboard": { "title": "Dashboard", "type": "string" },
+          "description": { "title": "Description", "type": "string" },
+          "meta": { "title": "Meta", "type": "object", "default": {} }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ValidationError" }
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": ["loc", "msg", "type"],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] }
+          },
+          "msg": { "title": "Message", "type": "string" },
+          "type": { "title": "Error Type", "type": "string" }
+        }
+      }
+    }
+  }
+}
