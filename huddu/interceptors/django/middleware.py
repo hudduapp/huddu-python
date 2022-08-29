@@ -1,8 +1,9 @@
 from abc import ABC
 
-try:
-    import time
+from huddu import ApiClient
 
+try:
+    from django.conf import settings
 except:
     raise NotImplemented("huddu | django is not installed")
 
@@ -13,25 +14,53 @@ class DjangoMiddleware(Interceptor, ABC):
 
     def __init__(self, get_response):
         self.get_response = get_response
+        self._make_client()
+
+    def _make_client(self) -> ApiClient:
+        config = settings.HUDDU
+        # try:
+        self.client = ApiClient(
+            project=config["project"],
+            stream=config["stream"]
+        )
+        # except Exception as _e:
+        #   raise Exception("project and/or stream not specified")
 
     def __call__(self, request):
         """
         What does Huddu log:
 
-        - Reason Pharase (to be displayed in a terminal
-        -
-
+        - response.reason_phrase
+        - response.status_code
+        - request.content_type
+        - request.path
+        - request.scheme => protocol
+        - request.body
+        - request.headers
+        - request.method
         """
 
         response = self.get_response(request)
-        print(dir(response))
+
+        self._log_event(response.reason_phrase, request.path, int(response.status_code), request.method)
 
         return response
 
-    def start(self):
-        self.client.report(
-            "dummy_event",
-            [{
-                "a": "b"
-            }]
-        )
+    def _log_event(self, line, path, status_code, method):
+        color = "white"
+
+        if str(status_code)[:1] == "5":
+            color = "red"
+        if str(status_code)[:1] == "4":
+            color = "yellow"
+        if str(status_code)[:1] == "3":
+            color = "purple"
+        if str(status_code)[:1] == "1":
+            color = "blue"
+
+        objects = [{
+            "data": {"line": f"{method.upper()} {path} {status_code} | {line}",
+                     "color": color}
+        }]
+
+        self.client.report("django_logs", objects)

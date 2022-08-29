@@ -1,4 +1,4 @@
-from huddu import HudduClient
+from huddu import ApiClient
 
 
 class Interceptor:
@@ -7,7 +7,7 @@ class Interceptor:
         _apply_patches()
         _run()
 
-    def _make_client(self) -> HudduClient:
+    def _make_client(self) -> ApiClient:
         raise NotImplementedError
 
     def _get_client(self):

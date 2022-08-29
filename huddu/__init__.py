@@ -1,8 +1,5 @@
 __all__ = [
-    "HudduClient"
-
-    # interceptors
-    "huddu.interceptors.DjangoMiddleware"
+    "ApiClient"
 ]
 
-from huddu.HudduClient import HudduClient
+from huddu.ApiClient import ApiClient

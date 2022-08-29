@@ -6,8 +6,8 @@ from django.conf import settings
 # v1.10+ requires MIDDLEWARE keyname
 # older versions require MIDDLEWARE_CLASSES keyname
 HUDDU_CONFIG = {
-    "project": "<project_id_or_name>",
-    "stream": "<stream_id_or_name>",
+    "project": "6967420762911318016",
+    "stream": "6967422931769139200",
     "environment": "development"
 
 }
@@ -26,7 +26,8 @@ MIDDLEWARE_CONFIG = (
 )
 
 settings.configure(
-    DEBUG=True,
+    DEBUG=False,
+    ALLOWED_HOSTS=["*"],
     SECRET_KEY='bigsecret',
     ROOT_URLCONF=__name__,
     HUDDU=HUDDU_CONFIG,
