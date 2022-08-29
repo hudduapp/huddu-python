@@ -1,7 +1,7 @@
 from huddu.interceptors.Interceptor import Interceptor
 
 
-class GeneralInterceptor(Interceptor):
+class DjangoMiddleware(Interceptor):
 
     def start(self):
         self.client.report(
