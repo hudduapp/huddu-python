@@ -1,5 +1,3 @@
-__all__ = [
-    "ApiClient"
-]
+__all__ = ["ApiClient"]
 
 from huddu.ApiClient import ApiClient

@@ -20,17 +20,21 @@ class ApiClient:
         self.project = project
         self.stream = stream
 
-        self.headers = {
-            "Content-Type": "application/json"
-        }
+        self.headers = {"Content-Type": "application/json"}
 
     def report(self, event_type: str, objects: List[dict]):
-        print(objects)
-        res = requests.request("POST", f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}",
-                               headers=self.headers, data=json.dumps(
-                {
-                    
-                    "objects": objects
-                }
-            ))
+        requests.request(
+            "POST",
+            f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}",
+            headers=self.headers,
+            data=json.dumps({"objects": objects}),
+        )
+
+    def make_suggestions(self, event_type: str, components: dict):
+        res = requests.request(
+            "POST",
+            f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}/suggestions",
+            headers=self.headers,
+            data=json.dumps({"suggestions": {"components": components}}),
+        )
         print(res.json())

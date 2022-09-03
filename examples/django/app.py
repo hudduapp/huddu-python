@@ -7,7 +7,7 @@ from django.conf import settings
 # older versions require MIDDLEWARE_CLASSES keyname
 HUDDU_CONFIG = {
     "project": "6967420762911318016",
-    "stream": "6967422931769139200",
+    "stream": "django_log_v1",
     "environment": "development"
 
 }
