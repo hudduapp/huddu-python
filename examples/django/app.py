@@ -26,7 +26,7 @@ MIDDLEWARE_CONFIG = (
 )
 
 settings.configure(
-    DEBUG=False,
+    DEBUG=True,
     ALLOWED_HOSTS=["*"],
     SECRET_KEY='bigsecret',
     ROOT_URLCONF=__name__,

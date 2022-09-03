@@ -1,3 +1,5 @@
+import sys
+import traceback
 from abc import ABC
 
 from huddu import ApiClient
@@ -18,7 +20,7 @@ class DjangoMiddleware(Interceptor, ABC):
     def _make_client(self) -> ApiClient:
         config = settings.HUDDU
         self.client = ApiClient(project=config["project"], stream=config["stream"])
-        self.client.make_suggestions("django_logs", [
+        self.client.make_suggestions("error_logs", [
             "6967511878721511424"])  # huddu/console  (https://huddu.io/marketplace/6967511878721511424)
 
     def __call__(self, request):
@@ -37,33 +39,19 @@ class DjangoMiddleware(Interceptor, ABC):
 
         response = self.get_response(request)
 
-        self._log_event(
-            response.reason_phrase,
-            request.path,
-            int(response.status_code),
-            request.method,
-        )
-
+        self.client.report("response_metrics", [{
+            "data": {
+                response["status_code"]: 1
+            }
+        }])
         return response
 
-    def _log_event(self, line, path, status_code, method):
-        color = "white"
-
-        if str(status_code)[:1] == "5":
-            color = "red"
-        if str(status_code)[:1] == "4":
-            color = "yellow"
-        if str(status_code)[:1] == "3":
-            color = "purple"
-        if str(status_code)[:1] == "1":
-            color = "blue"
-        objects = [
-            {
-                "data": {
-                    "line": f"{method.upper()} {path} {status_code} | {line}",
-                    "color": color,
-                }
+    def process_exception(self, request, exception):
+        _, _, stacktrace = sys.exc_info()
+        #        print(''.join(traceback.format_tb(stacktrace)))
+        self.client.report("error_logs", [{
+            "data": {
+                "line": f"{request.method} {request.path}\n---\nException:\n{exception}\n\nStacktrace:\n{''.join(traceback.format_tb(stacktrace))}",
+                "color": "red"
             }
-        ]
-
-        self.client.report("django_logs", objects)
+        }])
