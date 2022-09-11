@@ -6,10 +6,9 @@ from django.conf import settings
 # v1.10+ requires MIDDLEWARE keyname
 # older versions require MIDDLEWARE_CLASSES keyname
 HUDDU_CONFIG = {
-    "project": "6967420762911318016",
-    "stream": "django_log_v1",
+    "project": "6972870869211324416",
+    "stream": "a-stream",
     "environment": "development"
-
 }
 
 # from huddu.interceptors import DjangoMiddleware

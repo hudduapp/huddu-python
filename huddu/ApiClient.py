@@ -1,5 +1,4 @@
 import json
-from typing import List
 
 import requests
 
@@ -22,19 +21,17 @@ class ApiClient:
 
         self.headers = {"Content-Type": "application/json"}
 
-    def report(self, event_type: str, objects: List[dict]):
+    def report(self, event_type: str, data: dict):
         requests.request(
             "POST",
             f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}",
             headers=self.headers,
-            data=json.dumps({"objects": objects}),
+            data=json.dumps({"data": data}),
         )
 
-    def make_suggestions(self, event_type: str, components: dict):
-        res = requests.request(
-            "POST",
-            f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}/suggestions",
-            headers=self.headers,
-            data=json.dumps({"suggestions": {"components": components}}),
-        )
-        print(res.json())
+    def suggest_components(self, event_type: str, components: list):
+        self.report(event_type, {
+            "components": components,
+            "skip": True
+        })
+        print("-- making suggestions")
