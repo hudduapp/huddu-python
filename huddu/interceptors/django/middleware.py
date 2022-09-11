@@ -2,6 +2,8 @@ import sys
 import traceback
 from abc import ABC
 
+import pkg_resources
+
 from huddu import ApiClient
 
 try:
@@ -11,14 +13,11 @@ except:
 
 from huddu.interceptors.Interceptor import Interceptor
 
-latest_logs = [
-
-]
-
 
 class DjangoMiddleware(Interceptor, ABC):
     def __init__(self, get_response):
         self.get_response = get_response
+        self.config = settings.HUDDU
         self._make_client()
 
     def _make_client(self) -> ApiClient:
@@ -43,20 +42,36 @@ class DjangoMiddleware(Interceptor, ABC):
         response = self.get_response(request)
 
         self.client.report("response_metrics", {
+            "env": self.config.get("environment", self.config.get("env", "production")),
             "increment": response.status_code,
             "value": 1
         })
         return response
 
     def process_exception(self, request, exception):
-        _a, _b, stacktrace = sys.exc_info()
-        print(_a)
-        print(_b)
-        print(stacktrace)
+        _exception, _error, stacktrace = sys.exc_info()
+        installed_packages = pkg_resources.working_set
+        installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
+                                          for i in installed_packages])
+        print(installed_packages_list)
+        print(
+            {
+                "env": self.config.get("environment", self.config.get("env", "production")),
+                "packages": installed_packages_list,
+                "exception": str(_exception),
+                "error": str(_error),
+                "stacktrace": ''.join(traceback.format_tb(stacktrace)),
+            })
 
-        self.client.report("error_logs",
-                           {
-                               "line": f"{request.method} {request.path}\n---\nException:\n{exception}\n\nStacktrace:\n{''.join(traceback.format_tb(stacktrace))}",
-                               "color": "red"
-                           }
-                           )
+        # self.client.report("error_logs",
+        #                   {
+        #                       "env": config.get("environment", config.get("env", "production")),
+#
+#                       "error": str(_a),
+#                       "stacktrace": ''.join(traceback.format_tb(stacktrace)),
+#
+#                       "line": f"{request.method} {request.path}\n---\nException:\n{exception}\n\nStacktrace:\n{''.join(traceback.format_tb(stacktrace))}",
+#                       "color": "red"
+#                   }
+#                   )
+#
