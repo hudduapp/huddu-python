@@ -49,7 +49,11 @@ class DjangoMiddleware(Interceptor, ABC):
         return response
 
     def process_exception(self, request, exception):
-        _, _, stacktrace = sys.exc_info()
+        _a, _b, stacktrace = sys.exc_info()
+        print(_a)
+        print(_b)
+        print(stacktrace)
+
         self.client.report("error_logs",
                            {
                                "line": f"{request.method} {request.path}\n---\nException:\n{exception}\n\nStacktrace:\n{''.join(traceback.format_tb(stacktrace))}",

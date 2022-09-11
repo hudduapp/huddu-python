@@ -1,4 +1,5 @@
 import json
+import multiprocessing
 
 import requests
 
@@ -21,13 +22,17 @@ class ApiClient:
 
         self.headers = {"Content-Type": "application/json"}
 
-    def report(self, event_type: str, data: dict):
+    def _request(self, event_type: str, body: dict) -> None:
         requests.request(
             "POST",
             f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}",
             headers=self.headers,
-            data=json.dumps({"data": data}),
+            data=json.dumps(body),
         )
+
+    def report(self, event_type: str, data: dict):
+        p = multiprocessing.Process(target=self._request, args=[event_type, {"data": data}])
+        p.start()
 
     def suggest_components(self, event_type: str, components: list):
         self.report(event_type, {
