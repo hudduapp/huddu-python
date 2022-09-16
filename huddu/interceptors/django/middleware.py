@@ -1,4 +1,6 @@
+import inspect
 import sys
+import textwrap
 import traceback
 from abc import ABC
 
@@ -23,7 +25,7 @@ class DjangoMiddleware(Interceptor, ABC):
     def _make_client(self) -> ApiClient:
         config = settings.HUDDU
         self.client = ApiClient(project=config["project"], stream=config["stream"])
-        self.client.suggest_components("error_logs", ["6967511878721511424"])
+        self.client.suggest_components("error_logs", ["697468167417722477"])
 
     def __call__(self, request):
         """
@@ -53,25 +55,32 @@ class DjangoMiddleware(Interceptor, ABC):
         installed_packages = pkg_resources.working_set
         installed_packages_list = sorted(["%s==%s" % (i.key, i.version)
                                           for i in installed_packages])
-        print(installed_packages_list)
-        print(
-            {
-                "env": self.config.get("environment", self.config.get("env", "production")),
-                "packages": installed_packages_list,
-                "exception": str(_exception),
-                "error": str(_error),
-                "stacktrace": ''.join(traceback.format_tb(stacktrace)),
-            })
+        packages = ""
+        for i in installed_packages_list:
+            packages += f"- {i}\n"
 
-        # self.client.report("error_logs",
-        #                   {
-        #                       "env": config.get("environment", config.get("env", "production")),
-#
-#                       "error": str(_a),
-#                       "stacktrace": ''.join(traceback.format_tb(stacktrace)),
-#
-#                       "line": f"{request.method} {request.path}\n---\nException:\n{exception}\n\nStacktrace:\n{''.join(traceback.format_tb(stacktrace))}",
-#                       "color": "red"
-#                   }
-#                   )
-#
+
+        markdown = (
+        "# Error\n"
+        f"> {str(_error)}\n"
+        "### Exception\n"
+        f"> {str(_exception)}\n"
+        
+        
+        "### Stacktrace\n"
+        f"\t{''.join(traceback.format_tb(stacktrace))}\n"
+        
+        "# Environment\n"
+        "### Packages\n"
+        f"{packages}\n"
+        
+        "### Version\n"
+        f"{sys.version})"
+        )
+
+        self.client.report(
+            "error_logs",
+            {
+                "markdown": markdown
+            }
+        )

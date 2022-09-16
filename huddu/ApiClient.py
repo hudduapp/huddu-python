@@ -31,6 +31,7 @@ class ApiClient:
         )
 
     def report(self, event_type: str, data: dict):
+        print(data)
         p = multiprocessing.Process(target=self._request, args=[event_type, {"data": data}])
         p.start()
 
