@@ -1,33 +1,28 @@
 import sys
-
 from django.conf import settings
 
-# use settings compatible with the installed Django version
-# v1.10+ requires MIDDLEWARE keyname
-# older versions require MIDDLEWARE_CLASSES keyname
+
+# This is the HUDDU_CONFIG which will be read by the middleware
+# Note that this has to be set under the **HUDDU** variable in your settings!
 HUDDU_CONFIG = {
-    "project": "6972870869211324416",
-    "stream": "a-stream",
-    "environment": "development"
+    "project": "6972870869211324416",  # the project identifier
+    "stream": "a-stream",  # the streams name/identifier (if you use stream ids you will always write to that stream; with names events will be written to the newest version)
+    "environment": "debug",  # the environment | optional (the default value is debug)
 }
 
-# from huddu.interceptors import DjangoMiddleware
 
 MIDDLEWARE_CONFIG = (
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'huddu.interceptors.django.middleware.DjangoMiddleware'
-    # Rollbar middleware
-    # 'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Here we register the huddu DjangoMiddleware!
+    "huddu.interceptors.django.middleware.DjangoMiddleware",
 )
 
 settings.configure(
     DEBUG=True,
     ALLOWED_HOSTS=["*"],
-    SECRET_KEY='bigsecret',
+    SECRET_KEY="bigsecret",
     ROOT_URLCONF=__name__,
     HUDDU=HUDDU_CONFIG,
     MIDDLEWARE=MIDDLEWARE_CONFIG,
@@ -38,20 +33,18 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse('Hello World')
+    return HttpResponse("Hello World")
 
 
 def error(request):
-    # method contains invalid syntax for instance:
-
+    # an example error in your code
     a == b
-
-    return HttpResponse('Woops')
+    return HttpResponse("Woops")
 
 
 urlpatterns = (
-    path('', index),
-    path('errors', error),
+    path("", index),
+    path("errors", error),
 )
 
 if __name__ == "__main__":

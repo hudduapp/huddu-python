@@ -31,13 +31,11 @@ class ApiClient:
         )
 
     def report(self, event_type: str, data: dict):
-        print(data)
-        p = multiprocessing.Process(target=self._request, args=[event_type, {"data": data}])
+        p = multiprocessing.Process(
+            target=self._request, args=[event_type, {"data": data}]
+        )
         p.start()
 
     def suggest_components(self, event_type: str, components: list):
-        self.report(event_type, {
-            "components": components,
-            "skip": True
-        })
+        self.report(event_type, {"components": components, "skip": True})
         print("-- making suggestions")
