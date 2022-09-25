@@ -1,6 +1,4 @@
-import inspect
 import sys
-import textwrap
 import traceback
 from abc import ABC
 
@@ -24,9 +22,8 @@ class DjangoMiddleware(Interceptor, ABC):
 
     def _make_client(self) -> ApiClient:
         config = settings.HUDDU
-        self.client = ApiClient(project=config["project"], stream=config["stream"])
-        self.client.suggest_components("error_logs", ["697468167417722477"])
-
+        self.client = ApiClient(project=config["project"], stream=config["stream"], token=config.get("token", None))
+        
     def __call__(self, request):
         """
         What does Huddu log:
@@ -74,15 +71,15 @@ class DjangoMiddleware(Interceptor, ABC):
 
         # weird stuff happens with the stacktrace
         markdown += (
-            "".join(traceback.format_tb(stacktrace)) + "\n"
-            "</pre></code>\n"
-            "# ⚙️ Environment\n"
+                "".join(traceback.format_tb(stacktrace)) + "\n"
+                                                           "</pre></code>\n"
+                                                           "# ⚙️ Environment\n"
         )
 
         markdown += (
-            "<mark>"
-            + self.config.get("environment", self.config.get("env", "debug"))
-            + "</mark>\n"
+                "<mark>"
+                + self.config.get("environment", self.config.get("env", "debug"))
+                + "</mark>\n"
         )
         markdown += "### Packages\n" f"{packages}\n" "### Version\n" f"{sys.version})"
 

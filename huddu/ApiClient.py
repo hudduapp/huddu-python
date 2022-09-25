@@ -9,11 +9,9 @@ class HudduClientException(Exception):
 
 
 class ApiClient:
-    def __init__(self, project: str, stream: str):
+    def __init__(self, project: str, stream: str, token: str = None):
         """
         The main client for posting events to the huddu platform.
-
-        Note that the token parameter will be overwritten by the HUDDU_TOKEN envvar if it is specified
         :param project:
         :param stream:
         """
@@ -21,21 +19,22 @@ class ApiClient:
         self.stream = stream
 
         self.headers = {"Content-Type": "application/json"}
+        if token:
+            self.headers["Authorization"] = f"Token {token}"
 
     def _request(self, event_type: str, body: dict) -> None:
-        requests.request(
+        res = requests.request(
             "POST",
             f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}",
             headers=self.headers,
             data=json.dumps(body),
         )
 
-    def report(self, event_type: str, data: dict):
+        if res.status_code > 299:
+            print(res.json())
+
+    def report(self, event_type: str, data: dict, meta: dict = {}):
         p = multiprocessing.Process(
-            target=self._request, args=[event_type, {"data": data}]
+            target=self._request, args=[event_type, {"data": data, "meta": meta}]
         )
         p.start()
-
-    def suggest_components(self, event_type: str, components: list):
-        self.report(event_type, {"components": components, "skip": True})
-        print("-- making suggestions")
