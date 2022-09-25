@@ -23,7 +23,7 @@ class DjangoMiddleware(Interceptor, ABC):
     def _make_client(self) -> ApiClient:
         config = settings.HUDDU
         self.client = ApiClient(project=config["project"], stream=config["stream"], token=config.get("token", None))
-        
+
     def __call__(self, request):
         """
         What does Huddu log:
@@ -43,10 +43,12 @@ class DjangoMiddleware(Interceptor, ABC):
         self.client.report(
             "response_metrics",
             {
-                "env": self.config.get("environment", self.config.get("env", "debug")),
-                "increment": response.status_code,
+                "field": response.status_code,
                 "value": 1,
             },
+            meta={
+                "env": self.config.get("environment", self.config.get("env", "debug")),
+            }
         )
         return response
 
@@ -83,4 +85,7 @@ class DjangoMiddleware(Interceptor, ABC):
         )
         markdown += "### Packages\n" f"{packages}\n" "### Version\n" f"{sys.version})"
 
-        self.client.report("error_logs", {"markdown": markdown})
+        self.client.report("error_logs", {"markdown": markdown},
+                           meta={
+                               "env": self.config.get("environment", self.config.get("env", "debug")),
+                           })
