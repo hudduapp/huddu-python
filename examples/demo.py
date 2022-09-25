@@ -7,8 +7,7 @@ _huddu_client = ApiClient(
 )
 
 
-while True:
-    # something happened
+for i in range(0,5):
     try:
         a==b
     except Exception as e:
