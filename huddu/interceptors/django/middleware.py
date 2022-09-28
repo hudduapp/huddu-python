@@ -41,14 +41,11 @@ class DjangoMiddleware(Interceptor, ABC):
         response = self.get_response(request)
 
         self.client.report(
-            "response_metrics",
             {
                 "field": response.status_code,
                 "value": 1,
             },
-            meta={
-                "env": self.config.get("environment", self.config.get("env", "debug")),
-            }
+
         )
         return response
 
@@ -85,7 +82,4 @@ class DjangoMiddleware(Interceptor, ABC):
         )
         markdown += "### Packages\n" f"{packages}\n" "### Version\n" f"{sys.version})"
 
-        self.client.report("error_logs", {"markdown": markdown},
-                           meta={
-                               "env": self.config.get("environment", self.config.get("env", "debug")),
-                           })
+        self.client.report({"markdown": markdown})

@@ -22,10 +22,10 @@ class ApiClient:
         if token:
             self.headers["Authorization"] = f"Token {token}"
 
-    def _request(self, event_type: str, body: dict) -> None:
+    def _request(self, body: dict) -> None:
         res = requests.request(
             "POST",
-            f"https://ingest.huddu.io/{self.project}/{self.stream}/{event_type}",
+            f"https://ingest.huddu.io/{self.project}/{self.stream}",
             headers=self.headers,
             data=json.dumps(body),
         )
@@ -33,8 +33,8 @@ class ApiClient:
         if res.status_code > 299:
             print(res.json())
 
-    def report(self, event_type: str, data: dict, meta: dict = {}):
+    def report(self, data: dict):
         p = multiprocessing.Process(
-            target=self._request, args=[event_type, {"data": data, "meta": meta}]
+            target=self._request, args=[{"data": data}]
         )
         p.start()
