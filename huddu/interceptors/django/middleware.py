@@ -45,7 +45,6 @@ class DjangoMiddleware(Interceptor, ABC):
                 "field": response.status_code,
                 "value": 1,
             },
-
         )
         return response
 
@@ -82,4 +81,4 @@ class DjangoMiddleware(Interceptor, ABC):
         )
         markdown += "### Packages\n" f"{packages}\n" "### Version\n" f"{sys.version})"
 
-        self.client.report({"markdown": markdown})
+        self.client.report(markdown)

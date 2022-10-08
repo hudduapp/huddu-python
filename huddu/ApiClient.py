@@ -33,7 +33,7 @@ class ApiClient:
         if res.status_code > 299:
             print(res.json())
 
-    def report(self, data: dict):
+    def report(self, data):
         p = multiprocessing.Process(
             target=self._request, args=[{"data": data}]
         )
