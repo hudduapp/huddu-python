@@ -1,7 +1,7 @@
-import json
-import multiprocessing
-
-import requests
+from huddu.Accounts import Accounts
+from huddu.Events import Events
+from huddu.Projects import Projects
+from huddu.Streams import Streams
 
 
 class HudduClientException(Exception):
@@ -9,32 +9,15 @@ class HudduClientException(Exception):
 
 
 class ApiClient:
-    def __init__(self, project: str, stream: str, token: str = None):
+    def __init__(self, api_key):
         """
         The main client for posting events to the huddu platform.
         :param project:
         :param stream:
         """
-        self.project = project
-        self.stream = stream
-
-        self.headers = {"Content-Type": "application/json"}
-        if token:
-            self.headers["Authorization"] = f"Token {token}"
-
-    def _request(self, body: dict) -> None:
-        res = requests.request(
-            "POST",
-            f"https://ingest.huddu.io/{self.project}/{self.stream}",
-            headers=self.headers,
-            data=json.dumps(body),
-        )
-
-        if res.status_code > 299:
-            print(res.json())
-
-    def report(self, data):
-        p = multiprocessing.Process(
-            target=self._request, args=[{"data": data}]
-        )
-        p.start()
+        self.base_url = "https://api.huddu.io"
+        self.headers = {}
+        self.Projects = Projects(api_key)
+        self.Accounts = Accounts(api_key)
+        self.Streams = Streams(api_key)
+        self.Events = Events(api_key)
