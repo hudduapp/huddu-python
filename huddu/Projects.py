@@ -6,7 +6,16 @@ class Projects:
         self.api_key = api_key
 
     def list(self, account: str, skip: int = 0, limit: int = 25):
-        return _request(self.api_key, "GET", f"/accounts/{account}/projects", params={"skip": skip, "limit": limit})
+        return _request(
+            self.api_key,
+            "GET",
+            f"/accounts/{account}/projects",
+            params={"skip": skip, "limit": limit},
+        )
 
-    def get(self, id: str, account: str, ):
+    def get(
+        self,
+        id: str,
+        account: str,
+    ):
         return _request(self.api_key, "GET", f"/accounts/{account}/projects/{id}")

@@ -1,23 +1,34 @@
 import json
-from urllib import request, parse
+from urllib import parse
+
+from requests import Session
+
+
+class CustomSession(Session):
+    def rebuild_auth(self, prepared_request, response):
+        """
+        No code here means requests will always preserve the Authorization
+        header when redirected.
+        Be careful not to leak your credentials to untrusted hosts!
+        """
 
 
 def _request(api_key, method, url, params=None, data=None):
-    headers = {"Authorization": f"Token {api_key}", "OtherHeader": "hey"}
+    headers = {"Authorization": f"Token {api_key}"}
+
     base_url = "https://api.huddu.io"
 
-    req_url = f"{base_url}{url}"
     if params:
-        req_url += "?" + parse.urlencode(params)
-        r = request.Request(req_url, data=data, headers=headers, method=method)
-    elif data:
-        r = request.Request(req_url, headers=headers, method=method)
-    else:
-        r = request.Request(req_url, headers=headers, method=method)
+        url += "?" + parse.urlencode(params)
 
-    res = request.urlopen(r)
+    s = CustomSession()
 
-    if res.getcode() > 299:
-        raise Exception(json.loads(res.read().decode("utf-8")))
+    if data:
+        payload = json.dumps(data)
+        res = s.request(method, f"{base_url}{url}", data=payload, headers=headers)
     else:
-        return json.loads(res.read().decode("utf-8"))
+        res = s.request(method, f"{base_url}{url}", headers=headers)
+
+    if res.status_code > 299:
+        raise Exception(res.json())
+    return res.json()

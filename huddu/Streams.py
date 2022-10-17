@@ -8,21 +8,46 @@ class Streams:
         self.api_key = api_key
 
     def list(self, project: str, account: str, skip: int = 0, limit: int = 25):
-        return _request(self.api_key, "GET", f"/accounts/{account}/projects/{project}/streams",
-                        params={"skip": skip, "limit": limit})
+        return _request(
+            self.api_key,
+            "GET",
+            f"/accounts/{account}/projects/{project}/streams",
+            params={"skip": skip, "limit": limit},
+        )
 
-    def get(self, id: str, project: str, account: str, ):
-        return _request(self.api_key, "GET", f"/accounts/{account}/projects/{project}/streams/{id}")
+    def get(
+        self,
+        id: str,
+        project: str,
+        account: str,
+    ):
+        return _request(
+            self.api_key, "GET", f"/accounts/{account}/projects/{project}/streams/{id}"
+        )
 
-    def get_versions(self, id: str, project: str, account: str, ):
-        return _request(self.api_key, "GET", f"/accounts/{account}/projects/{project}/streams/{id}/versions")
+    def list_versions(
+        self,
+        id: str,
+        project: str,
+        account: str,
+    ):
+        return _request(
+            self.api_key,
+            "GET",
+            f"/accounts/{account}/projects/{project}/streams/{id}/versions",
+        )
 
     def create(self, project: str, account: str, name: str):
-        return _request(self.api_key, "POST", f"/accounts/{account}/projects/{project}/streams", data={
-            "name": name
-        })
+        return _request(
+            self.api_key,
+            "POST",
+            f"/accounts/{account}/projects/{project}/streams",
+            data={"name": name},
+        )
 
-    def create_version(self, project: str, account: str, version: str = None, name: str = None):
+    def create_version(
+        self, id: str, project: str, account: str, version: str = None, name: str = None
+    ):
         payload = {}
         if name:
             payload["name"] = name
@@ -31,4 +56,9 @@ class Streams:
         else:
             payload["version"] = int(time.time())
 
-        return _request(self.api_key, "POST", f"/accounts/{account}/projects/{project}/streams", data=payload)
+        return _request(
+            self.api_key,
+            "POST",
+            f"/accounts/{account}/projects/{project}/streams/{id}/versions",
+            data=payload,
+        )
