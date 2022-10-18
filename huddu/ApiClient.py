@@ -16,7 +16,6 @@ class ApiClient:
         :param stream:
         """
         self.base_url = "https://api.huddu.io"
-        self.headers = {}
         self.Projects = Projects(api_key)
         self.Accounts = Accounts(api_key)
         self.Streams = Streams(api_key)
