@@ -9,8 +9,14 @@ stream_id = "6987388048929628160"  # todo: replace as needed
 account_id = "6966809249058037760"  # todo: replace as needed
 event_id = "6987851870576484352"  # todo: replace as needed
 
-# PROJECTS
+# ACCOUNTS
+# list installations
+print(client.Accounts.list_installations())
 
+# get account
+print(client.Accounts.get(account_id))
+
+# PROJECTS
 # list projects
 print(client.Projects.list(account_id))
 
