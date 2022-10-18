@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="huddu",
-    version="",
+    version="1.0",
     packages=["huddu"],
     url="",
     requires=["json", "requests"],
