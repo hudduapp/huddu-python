@@ -10,12 +10,6 @@ class HudduClientException(Exception):
 
 class ApiClient:
     def __init__(self, api_key):
-        """
-        The main client for posting events to the huddu platform.
-        :param project:
-        :param stream:
-        """
-        self.base_url = "https://api.huddu.io"
         self.Projects = Projects(api_key)
         self.Accounts = Accounts(api_key)
         self.Streams = Streams(api_key)
