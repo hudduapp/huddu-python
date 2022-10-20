@@ -4,11 +4,11 @@ An API client for the api.huddu.io written in python
 
 ### Installation
 
-> pip install git+https://github.com/hudduapp/huddu-python.git@4ff0bf3#egg=huddu
+> pip install git+https://github.com/hudduapp/huddu-python.git@8f4d909#egg=huddu
 
 
 or:
-> pip3 install git+https://github.com/hudduapp/huddu-python.git@4ff0bf3#egg=huddu
+> pip3 install git+https://github.com/hudduapp/huddu-python.git@8f4d909#egg=huddu
 
 ### Usage
 
