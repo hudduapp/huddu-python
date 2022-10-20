@@ -8,6 +8,7 @@ project_id = "6979386863354290176"  # todo: replace as needed
 stream_id = "6987388048929628160"  # todo: replace as needed
 account_id = "6966809249058037760"  # todo: replace as needed
 event_id = "6987851870576484352"  # todo: replace as needed
+installation_id = "6987366675922460672"  # todo: replace as needed
 
 # ACCOUNTS
 # list installations
@@ -95,3 +96,16 @@ print(
         batch=[{"data": "[err] on line 100"}, {"data": "[err] on line 100"}],
     )
 )
+
+# INSTALLATIONS
+
+# list all installs
+print(client.Installations.list())
+
+# get a specific install
+print(client.Installations.get(installation_id))
+
+# update an install
+print(client.Installations.update(installation_id, meta={
+    "discord_webhooks_url": "https://discord.com"
+}))
