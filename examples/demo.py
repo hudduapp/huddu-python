@@ -11,8 +11,6 @@ event_id = "6987851870576484352"  # todo: replace as needed
 installation_id = "6987366675922460672"  # todo: replace as needed
 
 # ACCOUNTS
-# list installations
-print(client.Accounts.list_installations())
 
 # get account
 print(client.Accounts.get(account_id))
