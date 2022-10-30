@@ -32,3 +32,22 @@ def _request(api_key, method, url, params=None, data=None):
     if res.status_code > 299:
         raise Exception(res.json())
     return res.json()
+
+
+def _request_without_token(method, url, params=None, data=None):
+    base_url = "https://api.huddu.io"
+
+    if params:
+        url += "?" + parse.urlencode(params)
+
+    s = CustomSession()
+
+    if data:
+        payload = json.dumps(data)
+        res = s.request(method, f"{base_url}{url}", data=payload)
+    else:
+        res = s.request(method, f"{base_url}{url}")
+
+    if res.status_code > 299:
+        raise Exception(res.json())
+    return res.json()
