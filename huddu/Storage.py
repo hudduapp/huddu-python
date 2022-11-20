@@ -50,6 +50,7 @@ class Storage:
             ids=[id], skip=0, limit=1, start=start, end=end
         )["data"]
 
+        res = make_response([res[0]])
         if len(res) > 0:
-            return make_response([res[0]])[0]
+            return res[0]
         return None

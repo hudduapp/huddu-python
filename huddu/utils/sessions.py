@@ -37,6 +37,12 @@ class Session:
         return res.json()
 
     def create_documents(self, items: list):
+        for i in items:
+            try:
+                i["data"] = json.dumps(i["data"])
+            except:
+                i["data"] = str(i["data"])
+                
         return self._request("POST", data={"items": items})
 
     def list_documents(

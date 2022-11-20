@@ -5,11 +5,19 @@ class Str(str):
     pass
 
 
-class Dict(str):
+class Float(float):
     pass
 
 
-class List(str):
+class Int(int):
+    pass
+
+
+class Dict(dict):
+    pass
+
+
+class List(list):
     pass
 
 
@@ -23,9 +31,40 @@ def make_response(items):
         except:
             ...
 
+        try:
+            if "." in item_data:
+                item_data = float(item_data)
+            item_data = int(item_data)
+        except:
+            ...
+
         formatted = None
         if type(item_data) == str:
-            formatted = Str(item["data"])
+            formatted = Str(item_data)
+            try:
+                formatted.size = item["size"]
+                formatted.total_size = item["total_size"]
+
+                formatted.content_type = item["content_type"]
+                formatted.created = item["created"]
+                formatted.updated = item["updated"]
+            except:
+                pass
+
+        elif type(item_data) == float:
+            formatted = Float(item_data)
+            try:
+                formatted.size = item["size"]
+                formatted.total_size = item["total_size"]
+
+                formatted.content_type = item["content_type"]
+                formatted.created = item["created"]
+                formatted.updated = item["updated"]
+            except:
+                pass
+
+        elif type(item_data) == int:
+            formatted = Int(item_data)
             try:
                 formatted.size = item["size"]
                 formatted.total_size = item["total_size"]
@@ -37,7 +76,7 @@ def make_response(items):
                 pass
 
         elif type(item_data) == dict:
-            formatted = Dict(item["data"])
+            formatted = Dict(item_data)
             try:
                 formatted.size = item["size"]
                 formatted.total_size = item["total_size"]
@@ -49,7 +88,7 @@ def make_response(items):
                 pass
 
         elif type(item_data) == list:
-            formatted = List(item["data"])
+            formatted = List(item_data)
             try:
                 formatted.size = item["size"]
                 formatted.total_size = item["total_size"]
