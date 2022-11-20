@@ -1,4 +1,3 @@
-__all__ = ["ApiClient", "IntegrationsClient"]
+__all__ = ["Storage"]
 
-from huddu.ApiClient import ApiClient
-from huddu.IntegrationsClient import IntegrationsClient
+from huddu.Storage import Storage
