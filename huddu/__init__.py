@@ -1,3 +1,3 @@
-__all__ = ["Storage"]
+__all__ = ["Store"]
 
-from huddu.Storage import Storage
+from huddu.Store import Store

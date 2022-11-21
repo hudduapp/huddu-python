@@ -5,7 +5,7 @@ from huddu.utils.responses import make_response
 from huddu.utils.sessions import Session
 
 
-class Storage:
+class Store:
     def __init__(
             self, token: str, collection: str, region: str, base_url: str = "https://connect.huddu.io"
     ):
