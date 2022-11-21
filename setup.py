@@ -1,8 +1,5 @@
 from setuptools import setup
 
-readme_file = open("Readme.md", "r")
-readme_content = readme_file.read()
-
 setup(
     name="huddu",
 
