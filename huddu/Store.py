@@ -1,8 +1,8 @@
 from typing import List
 
-from huddu.utils.exceptions import SafePutException
-from huddu.utils.responses import make_response
-from huddu.utils.sessions import Session
+from utils.exceptions import SafePutException
+from utils.responses import make_response
+from utils.sessions import Session
 
 
 class Store:
