@@ -18,11 +18,7 @@ setup(
 
     author="Joshua3212",
 
-    author_email="",
+    author_email="hello@huddu.io",
 
-    description="",
-
-    long_description_content_type="text/markdown",
-
-    long_description=readme_content,
+    description="Python SDK for Huddu",
 )
