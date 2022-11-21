@@ -1,10 +1,9 @@
-# huddu-python
+# Huddu Python SDK
 
-An API client for the api.huddu.io written in python
 
-### Installation
-
+Get from Pypi:
 > pip install huddu-python
 
-Pin this version:
-> pip install huddu-python==1.0
+Pin a version:
+> pip install huddu-python=={version}
+
