@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="huddu",
 
-    version="1.0.2",
+    version="1.0.6",
 
     packages=["huddu"],
 

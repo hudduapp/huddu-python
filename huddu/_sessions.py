@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from huddu.utils.exceptions import APIException
+from ._exceptions import APIException
 
 
 class Session:
