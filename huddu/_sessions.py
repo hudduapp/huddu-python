@@ -7,7 +7,11 @@ from ._exceptions import APIException
 
 class Session:
     def __init__(
-            self, collection: str, token: str, region: str, base_url: str = "https://connect.huddu.io"
+        self,
+        collection: str,
+        token: str,
+        region: str,
+        base_url: str = "https://connect.huddu.io",
     ):
         self.collection = collection
         self.token = token
@@ -15,10 +19,11 @@ class Session:
         self.base_url = base_url
 
     def _request(self, method, params: dict = None, data: dict = None):
-        headers = {"Authorization": f"Token {self.token}",
-                   "Collection": self.collection,
-                   "Region": self.region
-                   }
+        headers = {
+            "Authorization": f"Token {self.token}",
+            "Collection": self.collection,
+            "Region": self.region,
+        }
 
         if data:
             res = requests.request(
@@ -42,16 +47,16 @@ class Session:
                 i["data"] = json.dumps(i["data"])
             except:
                 i["data"] = str(i["data"])
-                
+
         return self._request("POST", data={"items": items})
 
     def list_documents(
-            self,
-            ids: list = None,
-            limit: int = 25,
-            skip: int = 0,
-            start: int = 0,
-            end: int = 0,
+        self,
+        ids: list = None,
+        limit: int = 25,
+        skip: int = 0,
+        start: int = 0,
+        end: int = 0,
     ):
         params = {}
 
