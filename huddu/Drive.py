@@ -1,6 +1,6 @@
 import time
 
-from _responses import make_response
+from ._responses import make_response
 from ._sessions import Session
 
 
