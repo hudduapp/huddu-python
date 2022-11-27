@@ -13,6 +13,7 @@ class Drive:
             base_url: str = "https://connect.huddu.io",
     ):
         self.session = Session(collection, token, region, base_url)
+        self.session.set_type("drive")
 
     def upload(self, name: str, data: str = None, path: str = None):
         n = int(1e7)  # 10 MB in bytes

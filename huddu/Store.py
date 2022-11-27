@@ -14,6 +14,7 @@ class Store:
             base_url: str = "https://connect.huddu.io",
     ):
         self.session = Session(collection, token, region, base_url)
+        self.session.set_type("store")
 
     def put(self, id: str, data: str, safe: bool = True):
         if safe:

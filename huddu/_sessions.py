@@ -76,3 +76,18 @@ class Session:
 
     def delete_documents(self, ids: list):
         return self._request("DELETE", data={"ids": ids})
+
+    def set_type(self, type):
+        type_document = None
+        try:
+            type_document = self.list_documents(["_type"])["data"][0]
+        except:
+            self.create_documents(
+                [{
+                    "id": "_type",
+                    "data": type
+                }]
+            )
+        if type_document:
+            if not type_document["data"] == type:
+                raise APIException("Collection is already used for " + type_document["data"])
