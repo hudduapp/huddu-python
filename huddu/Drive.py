@@ -1,15 +1,16 @@
 import time
 
+from _responses import make_response
 from ._sessions import Session
 
 
 class Drive:
     def __init__(
-        self,
-        token: str,
-        collection: str,
-        region: str,
-        base_url: str = "https://connect.huddu.io",
+            self,
+            token: str,
+            collection: str,
+            region: str,
+            base_url: str = "https://connect.huddu.io",
     ):
         self.session = Session(collection, token, region, base_url)
 
@@ -20,11 +21,11 @@ class Drive:
             f = open(path, "r")
             data = f.read()
 
-        chunks = [data[i : i + n] for i in range(0, len(data), n)]
+        chunks = [data[i: i + n] for i in range(0, len(data), n)]
 
         documents = []
         for i in chunks:
-            documents.append({"id": f"{name}_{chunks.index(i) + 1}", "data": i})
+            documents.append({"id": f"{chunks.index(i) + 1}_{name}", "data": str(i)})
 
         for i in documents:
             self.session.create_documents([i])
@@ -34,8 +35,8 @@ class Drive:
         run = 1
         while True:
             try:
-                document = self.session.list_documents([f"{name}_{run}"])
-                yield document["data"][0]["data"]
+                document = self.session.list_documents([f"{run}_{name}"])
+                yield make_response([document["data"][0]])[0]
                 run += 1
             except:
                 break
@@ -44,9 +45,7 @@ class Drive:
         run = 1
         while True:
             try:
-                res = self.session.delete_documents([f"{name}_{run}"])
-                if res.get("error"):
-                    break
+                self.session.delete_documents([f"{run}_{name}"])
                 run += 1
             except:
                 break

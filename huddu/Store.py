@@ -7,11 +7,11 @@ from ._sessions import Session
 
 class Store:
     def __init__(
-        self,
-        token: str,
-        collection: str,
-        region: str,
-        base_url: str = "https://connect.huddu.io",
+            self,
+            token: str,
+            collection: str,
+            region: str,
+            base_url: str = "https://connect.huddu.io",
     ):
         self.session = Session(collection, token, region, base_url)
 
@@ -29,12 +29,12 @@ class Store:
         self.session.delete_documents([id])
 
     def fetch(
-        self,
-        ids: List[str] = None,
-        skip: int = 0,
-        limit: int = 25,
-        start: int = None,
-        end: int = None,
+            self,
+            ids: List[str] = None,
+            skip: int = 0,
+            limit: int = 25,
+            start: int = None,
+            end: int = None,
     ):
         res = self.session.list_documents(
             ids=ids, skip=skip, limit=limit, start=start, end=end
@@ -45,16 +45,16 @@ class Store:
         return None
 
     def get(
-        self,
-        id: str,
-        start: int = None,
-        end: int = None,
+            self,
+            id: str,
+            start: int = None,
+            end: int = None,
     ):
         res = self.session.list_documents(
             ids=[id], skip=0, limit=1, start=start, end=end
         )["data"]
 
-        res = make_response([res[0]])
         if len(res) > 0:
+            res = make_response([res[0]])
             return res[0]
         return None
